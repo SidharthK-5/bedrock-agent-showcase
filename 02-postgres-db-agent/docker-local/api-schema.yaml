@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: Employee Database API
+  description: API for querying employee and project data through Bedrock Agent
+  version: 1.0.0
+
+paths:
+  /employees:
+    get:
+      summary: Get all employees
+      description: Retrieve a list of employees with optional filters
+      operationId: getEmployees
+      parameters:
+        - name: department
+          in: query
+          description: Filter by department name
+          required: false
+          schema:
+            type: string
+        - name: min_salary
+          in: query
+          description: Filter by minimum salary
+          required: false
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  employees:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Employee'
+                  count:
+                    type: integer
+    post:
+      summary: Add new employee
+      description: Create a new employee record
+      operationId: addEmployee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - department
+                - salary
+                - hire_date
+              properties:
+                name:
+                  type: string
+                  description: Employee full name
+                email:
+                  type: string
+                  format: email
+                  description: Employee email address
+                department:
+                  type: string
+                  description: Department name
+                salary:
+                  type: number
+                  description: Annual salary
+                hire_date:
+                  type: string
+                  format: date
+                  description: Hire date in YYYY-MM-DD format
+      responses:
+        '200':
+          description: Employee created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  new_employee:
+                    $ref: '#/components/schemas/Employee'
+                  status:
+                    type: string
+
+  /employees/{id}:
+    get:
+      summary: Get employee by ID
+      description: Retrieve a specific employee by their ID
+      operationId: getEmployeeById
+      parameters:
+        - name: id
+          in: path
+          description: Employee ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  employee:
+                    $ref: '#/components/schemas/Employee'
+
+  /projects:
+    get:
+      summary: Get all projects
+      description: Retrieve a list of projects with optional status filter
+      operationId: getProjects
+      parameters:
+        - name: status
+          in: query
+          description: Filter by project status (active, completed, on-hold)
+          required: false
+          schema:
+            type: string
+            enum: [active, completed, on-hold]
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project'
+                  count:
+                    type: integer
+
+  /departments/summary:
+    get:
+      summary: Get department statistics
+      description: Retrieve summary statistics for all departments including employee count and salary information
+      operationId: getDepartmentSummary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  departments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DepartmentSummary'
+
+components:
+  schemas:
+    Employee:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique employee identifier
+        name:
+          type: string
+          description: Employee full name
+        email:
+          type: string
+          format: email
+          description: Employee email address
+        department:
+          type: string
+          description: Department name
+        salary:
+          type: number
+          description: Annual salary
+        hire_date:
+          type: string
+          format: date
+          description: Date employee was hired
+        created_at:
+          type: string
+          format: date-time
+          description: Record creation timestamp
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique project identifier
+        name:
+          type: string
+          description: Project name
+        description:
+          type: string
+          description: Project description
+        budget:
+          type: number
+          description: Project budget
+        start_date:
+          type: string
+          format: date
+          description: Project start date
+        end_date:
+          type: string
+          format: date
+          description: Project end date
+        status:
+          type: string
+          enum: [active, completed, on-hold]
+          description: Current project status
+        created_at:
+          type: string
+          format: date-time
+          description: Record creation timestamp
+
+    DepartmentSummary:
+      type: object
+      properties:
+        department:
+          type: string
+          description: Department name
+        employee_count:
+          type: integer
+          description: Number of employees in department
+        avg_salary:
+          type: number
+          description: Average salary in department
+        min_salary:
+          type: number
+          description: Minimum salary in department
+        max_salary:
+          type: number
+          description: Maximum salary in department
