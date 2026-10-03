@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Database Query Agent API",
+    "version": "1.0.0",
+    "description": "API for Bedrock Agent to interact with PostgreSQL database"
+  },
+  "paths": {
+    "/getSchema": {
+      "get": {
+        "summary": "Get Database Schema",
+        "description": "Retrieves the complete database schema including all tables, columns, and data types. Use this to understand the database structure before querying.",
+        "operationId": "getSchema",
+        "responses": {
+          "200": {
+            "description": "Successful response with database schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the operation was successful"
+                    },
+                    "schema": {
+                      "type": "object",
+                      "description": "Complete database schema structure"
+                    },
+                    "summary": {
+                      "type": "string",
+                      "description": "Human-readable summary of the database schema"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/queryDatabase": {
+      "get": {
+        "summary": "Query Database with Natural Language",
+        "description": "Accepts a natural language query, analyzes the database schema to find relevant tables, and returns matching data. The agent will automatically route the query to appropriate tables based on keywords and column names.",
+        "operationId": "queryDatabase",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Natural language query describing what data to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Show me all employees"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with query results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the operation was successful"
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "The original user query"
+                    },
+                    "analysis": {
+                      "type": "array",
+                      "description": "List of relevant tables found for the query",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "schema": {
+                            "type": "string"
+                          },
+                          "table": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "results": {
+                      "type": "object",
+                      "description": "Query results from relevant tables"
+                    },
+                    "schema_info": {
+                      "type": "string",
+                      "description": "Database schema information if no relevant tables found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/executeSQL": {
+      "get": {
+        "summary": "Execute Custom SQL Query",
+        "description": "Executes a custom SQL query against the database. Use this when you need to run specific SQL statements. Be cautious with write operations.",
+        "operationId": "executeSQL",
+        "parameters": [
+          {
+            "name": "sqlQuery",
+            "in": "query",
+            "description": "SQL query to execute",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SELECT * FROM employees LIMIT 10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with query results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates if the operation was successful"
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "The SQL query that was executed"
+                    },
+                    "row_count": {
+                      "type": "integer",
+                      "description": "Number of rows returned"
+                    },
+                    "results": {
+                      "type": "array",
+                      "description": "Query results",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
