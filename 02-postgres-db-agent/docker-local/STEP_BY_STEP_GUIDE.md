@@ -36,7 +36,7 @@ Before starting, ensure you have:
 ### 1.1 Start PostgreSQL in Docker
 
 ```bash
-cd ~/bedrock-agent-local-db
+cd ~/02-postgres-db-agent/docker-local
 
 # Start the database
 docker-compose up -d
@@ -295,17 +295,20 @@ export BEDROCK_AGENT_ID=ABCDEFGHIJ  # Replace with your agent ID from Step 5
 5. Try these queries:
 
 **Query 1:**
-```
+
+```txt
 List all employees in the Engineering department
 ```
 
 **Query 2:**
-```
+
+```txt
 What is the average salary by department?
 ```
 
 **Query 3:**
-```
+
+```txt
 Show me all active projects
 ```
 
@@ -490,7 +493,7 @@ docker-compose restart
 
 ### Data Modification
 
-- "Add a new employee: Sarah Johnson, sarah.j@example.com, Marketing, $78000, 2024-12-01"
+- "Add a new employee: Sarah Johnson, [sarah.j@example.com](mailto:sarah.j@example.com), Marketing, $78000, 2024-12-01"
 
 ---
 
@@ -591,9 +594,9 @@ Your Bedrock Agent can now query your local database using natural language!
 
 ## Support Resources
 
-- **AWS Bedrock Docs**: https://docs.aws.amazon.com/bedrock/
-- **Lambda with Databases**: https://docs.aws.amazon.com/lambda/latest/dg/services-rds.html
-- **Localtunnel**: https://theboroer.github.io/localtunnel-www/
-- **PostgreSQL Docs**: https://www.postgresql.org/docs/
+- [AWS Bedrock Docs](https://docs.aws.amazon.com/bedrock/)
+- [Lambda with Databases](https://docs.aws.amazon.com/lambda/latest/dg/services-rds.html)
+- [Localtunnel](https://theboroer.github.io/localtunnel-www/)
+- [PostgreSQL Docs](https://www.postgresql.org/docs/)
 
 For issues, check CloudWatch logs and verify each component is working individually before testing the full integration.
