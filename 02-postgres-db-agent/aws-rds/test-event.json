@@ -1,0 +1,11 @@
+{
+  "actionGroup": "DatabaseActions",
+  "apiPath": "/employees",
+  "httpMethod": "GET",
+  "parameters": [
+    {
+      "name": "department",
+      "value": "Engineering"
+    }
+  ]
+}

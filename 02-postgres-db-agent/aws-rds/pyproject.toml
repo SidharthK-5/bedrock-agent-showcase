@@ -1,0 +1,12 @@
+[project]
+name = "bedrock-db-connector"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "psycopg>=3.3.0",
+    "psycopg2-binary>=2.9.11",
+    "sqlalchemy>=2.0.44",
+    "typing-extensions>=4.15.0",
+]
